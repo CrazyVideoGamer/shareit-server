@@ -17,6 +17,9 @@ app.get("/:url", (req, res) => {
 
 TODO:
 check links
+
 1. https://www.google.com/search?q=port+forward+node&rlz=1CAJIKU_enUS923US923&ei=ye06Yau8K8_N_AaB7aigDw&oq=port+forward+node&gs_lcp=Cgdnd3Mtd2l6EAMyBQgAEIAEMgUIABCABDIGCAAQFhAeMgYIABAWEB4yBggAEBYQHjIGCAAQFhAeMgYIABAWEB46BwgAEEcQsANKBAhBGABQ3CpYuy5g4DBoAXACeACAAfUBiAHnBZIBBTAuMi4ymAEAoAEByAEIwAEB&sclient=gws-wiz&ved=0ahUKEwjrxOz21vPyAhXPJt8KHYE2CvQQ4dUDCA4&uact=5&safe=active&ssui=on
+
 2. https://gist.github.com/462720/544868b1c9bc51a0205b1a4af5f6ab1322008afa
+
 3. https://gist.github.com/sqren/2d9639ad228ccb051a9da752c8c70c66
