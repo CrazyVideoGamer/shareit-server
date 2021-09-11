@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "node dev.js"
+    "dev": "nodemon -q --ignore server",
+    "sStart": "node server/index.js",
+    "sDev": "node server/dev.js",
+    "postinstall": "cd server && npm install"
   },
   "repository": {
     "type": "git",
