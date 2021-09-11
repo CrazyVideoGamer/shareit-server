@@ -15,7 +15,15 @@ app.get("/:url", (req, res) => {
 
 2. SSH connection? - https://superuser.com/questions/1345341/ssh-local-port-forwarding-to-a-website
 
-TODO:
+## how to download all the files from the web
+Just use wget like so:
+```wget --content-disposition -r https://shareit.crazyvideogamer.repl.co/route```
+
+Note: the ```--content-disposition``` is for files
+
+
+### TODO:
+maybe split the folder server and the main application into 2 repositories?
 check links
 
 1. https://www.google.com/search?q=port+forward+node&rlz=1CAJIKU_enUS923US923&ei=ye06Yau8K8_N_AaB7aigDw&oq=port+forward+node&gs_lcp=Cgdnd3Mtd2l6EAMyBQgAEIAEMgUIABCABDIGCAAQFhAeMgYIABAWEB4yBggAEBYQHjIGCAAQFhAeMgYIABAWEB46BwgAEEcQsANKBAhBGABQ3CpYuy5g4DBoAXACeACAAfUBiAHnBZIBBTAuMi4ymAEAoAEByAEIwAEB&sclient=gws-wiz&ved=0ahUKEwjrxOz21vPyAhXPJt8KHYE2CvQQ4dUDCA4&uact=5&safe=active&ssui=on

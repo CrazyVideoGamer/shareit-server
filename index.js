@@ -1,28 +1,59 @@
 console.log("---------------------") // separater for nodemon dev
 
 const express = require("express");
+
+const httpProxy = require("http-proxy");
+const HttpProxyRules = require('http-proxy-rules');
+
+let proxy = httpProxy.createProxyServer();
+
 const app = express();
 
-let subdomains = [];
+let routes = {};
 
 app.use(express.json());
 
 app.post("/", (req, res) => {
-    subdomains.push(req.body);
-    console.log("subdomain created");
-    res.send("subdomain created");
+    routes[req.body.route] = req.body.info;
+    console.log(routes);
+    console.log("route created");
+    res.send("route created");
 })
 
 app.get("/", (req, res) => {
-  res.send("Please create a shared link at command line.")
-});
-  
-
-app.get("*", (req, res, next) => {
-  if (req.path.contains("favicon.ico"), () => {
-    res.sendStatus(204);
-  })
-  console.log(req.subdomains);
+  res.send("Please create a shared link in the terminal.")
 })
 
-app.listen(5000);
+app.get("/robots.txt", (req, res) => {
+  res.sendFile(__dirname + "/robots.txt");
+})
+
+app.get(["/:route", "/:route/*"], (req, res) => {
+  console.log(req.params, req.url);
+  if (req.params.route in routes) {
+    route = routes[req.params.route];
+    let fLocation = `http://${route.addr}:${route.port}/${req.params.route}`
+
+    proxyRuleURL = `.*/${req.params.route}`
+
+    let proxyRules = new HttpProxyRules({
+      rules: {
+        [proxyRuleURL]: fLocation
+      },
+      defualt: fLocation
+    })
+
+    let target = proxyRules.match(req);
+
+    console.log(req.url);
+
+    proxy.web(req, res, {target: target});
+
+  } else {
+    console.log(`not a route ${JSON.stringify(routes)}`);
+  }
+});
+
+app.listen(3000, e => {
+  // console.log(e);
+});

@@ -15,53 +15,83 @@ Arguments:
 `)
 } else {
 
-const f = argv[0];
 const fs = require("fs");
+const path = require("path");
+
+let target = argv[0];
+if (!path.isAbsolute(target)) {
+  target = path.join(process.cwd(), target);
+}
+
+let stats = undefined;
 
 try {
-  if (fs.existsSync(f)) {
-
-    const express = require("express");
-    const serveIndex = require("serve-index");
-
-    const app = express();
-
-    app.use("/", express.static(f), serveIndex(f));
-
-    app.listen(3000, (e) => {
-      if (e) {
-        console.error("Unable to start server. Port 3000 may already be used");
-      } else {
-        const namor = require("namor");
-        const subdomain = namor.generate({ words: 3, saltLength: 5 })
-
-        const ip = require("ip");
-        const addr = ip.address();
-        console.log(addr);
-
-        console.log("Creating url...")
-
-        const axios = require("axios").default;
-        axios.post("http://localhost:5000", {
-            subdomain: subdomain,
-            url: `http://${addr}:3000/`
-          })
-          .then(res => {
-            if (res.data === "subdomain created") {
-              console.log(`Shared! Go to https://${subdomain}.repl.co`);
-            }
-          })
-          .catch(e => {
-            console.log("Error. Unable to create url.")
-            console.error(e);
-          })
-      }
-    })
-  } else {
-    console.error(`File/folder ${f} does not exist.`)
-  }
+  stats = fs.statSync(target);
 } catch(e) {
-  console.error("An error occurred.");
+  console.error(`File/folder ${target} does not exist.`)
+  // console.error(e);
+}
+
+try {
+  const express = require("express");
+  const serveIndex = require("serve-index");
+
+  const app = express();
+
+  if (stats.isDirectory()) {
+    app.use("/:route", express.static(target), serveIndex(target));
+    console.log("dir");
+  } else {
+    app.get("/:route", (req, res) => {
+      res.download(target);
+    })
+  }
+
+  const portfinder = require("portfinder");
+
+  portfinder.getPort({
+    port: 8000,    // minimum port
+    stopPort: 8080 // maximum port
+  }, (err, port) => {
+    if (err) {
+      console.error("Unable to start server. Port 3000 may already be used");
+    } else {
+
+    app.listen(port, () => {
+      const namor = require("namor");
+      const route = namor.generate({ words: 2, saltLength: 5 })
+
+      const ip = require("ip");
+      const addr = ip.address();
+      console.log(addr);
+
+      console.log("Creating url...")
+
+      const axios = require("axios").default;
+      axios.post("http://localhost:3000", {
+          route: route,
+          info: {
+            addr: addr,
+            port: port
+          }
+        })
+        .then(res => {
+          if (res.data === "route created") {
+            console.log(`Shared! Go to https://shareit.crazyvideogamer.repl.co/${route}`);
+          }
+        })
+        .catch(e => {
+          console.log("Error: Unable to create url. Our server may be down.");
+        });
+    })
+
+    }
+
+  })
+
+} catch(e) {
+  console.log("An error occurred. Please contact the developer.")
+  console.log(e);
 }
 
 }

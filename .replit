@@ -1,2 +1,6 @@
 language = "nodejs"
-run = "npm run dev"
+run = "node server/index.js server"
+#run = "npm run dev > dev 2>&1 & npm run sDev"
+#run = " npm run sDev > sdev 2>&1 & npm run dev"
+#run = "npm run sDev"
+#run="npm run dev"
