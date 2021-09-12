@@ -19,7 +19,7 @@ app.get("/:url", (req, res) => {
 Just use wget like so:
 ```wget --content-disposition -r https://shareit.crazyvideogamer.repl.co/route```
 
-Note: the ```--content-disposition``` is for files
+Note: the ```--content-disposition``` is for files. It doesn't do anything when a directory was uploaded. What it does is that when downloading a file, we get the actual filename instead of "download"
 
 
 ### TODO:

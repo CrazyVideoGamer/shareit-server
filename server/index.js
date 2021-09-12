@@ -39,8 +39,7 @@ try {
   const app = express();
 
   if (stats.isDirectory()) {
-    app.use("/:route", express.static(target), serveIndex(target));
-    console.log("dir");
+    app.use("/:route", express.static(target), serveIndex(target)); // we use :route because then when you click on a link, it goes to localhost:3000/:route/path/to/file, instead of localhost:3000/path/to/file which doesn't exist.
   } else {
     app.get("/:route", (req, res) => {
       res.download(target);
@@ -57,32 +56,39 @@ try {
       console.error("Unable to start server. Port 3000 may already be used");
     } else {
 
-    app.listen(port, () => {
-      const namor = require("namor");
-      const route = namor.generate({ words: 2, saltLength: 5 })
-
-      const ip = require("ip");
-      const addr = ip.address();
-      console.log(addr);
+    app.listen(port, async () => {
+      let remakeRoute = true; // will stay true in the case of a route name collision
 
       console.log("Creating url...")
 
-      const axios = require("axios").default;
-      axios.post("http://localhost:3000", {
-          route: route,
-          info: {
-            addr: addr,
-            port: port
-          }
-        })
-        .then(res => {
+      async function createRoute() {
+        const namor = require("namor");
+        const route = namor.generate({ words: 2, saltLength: 5 })
+
+        const ip = require("ip");
+        const addr = ip.address();
+
+        try {
+          const axios = require("axios").default;
+          let res = await axios.post("http://localhost:3000", {
+              route: route,
+              info: {
+                addr: addr,
+                port: port
+              }
+          })
           if (res.data === "route created") {
             console.log(`Shared! Go to https://shareit.crazyvideogamer.repl.co/${route}`);
+            remakeRoute = false;
           }
-        })
-        .catch(e => {
+        } catch {
           console.log("Error: Unable to create url. Our server may be down.");
-        });
+        }
+      }
+      // await createRoute();
+      while (remakeRoute === true) {
+        await createRoute();
+      }
     })
 
     }

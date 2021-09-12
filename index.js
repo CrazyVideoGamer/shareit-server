@@ -14,10 +14,15 @@ let routes = {};
 app.use(express.json());
 
 app.post("/", (req, res) => {
+  if (req.body.route in routes) {
+    console.log("collision");
+    res.send("collision")
+  } else {
     routes[req.body.route] = req.body.info;
     console.log(routes);
     console.log("route created");
     res.send("route created");
+  }
 })
 
 app.get("/", (req, res) => {
@@ -55,5 +60,7 @@ app.get(["/:route", "/:route/*"], (req, res) => {
 });
 
 app.listen(3000, e => {
-  // console.log(e);
+  if (e) {
+    console.log(e);
+  }
 });
