@@ -17,13 +17,19 @@ app.get("/:url", (req, res) => {
 
 ## how to download all the files from the web
 Just use wget like so:
-```wget --content-disposition -r https://shareit.crazyvideogamer.repl.co/route```
+`wget -q --show-progress --content-disposition -r https://shareit.crazyvideogamer.repl.co/route`
 
-Note: the ```--content-disposition``` is for files. It doesn't do anything when a directory was uploaded. What it does is that when downloading a file, we get the actual filename instead of "download"
+Note: the `--content-disposition` is for files. It doesn't do anything when a directory was uploaded. What it does is that when downloading a file, we get the actual filename instead of "download"
+
+Note 2: the `-q --show-progress` is for hiding most of the prints
+
+Or use curl like so:
+`curl `
 
 
 ### TODO:
 maybe split the folder server and the main application into 2 repositories?
+
 check links
 
 1. https://www.google.com/search?q=port+forward+node&rlz=1CAJIKU_enUS923US923&ei=ye06Yau8K8_N_AaB7aigDw&oq=port+forward+node&gs_lcp=Cgdnd3Mtd2l6EAMyBQgAEIAEMgUIABCABDIGCAAQFhAeMgYIABAWEB4yBggAEBYQHjIGCAAQFhAeMgYIABAWEB46BwgAEEcQsANKBAhBGABQ3CpYuy5g4DBoAXACeACAAfUBiAHnBZIBBTAuMi4ymAEAoAEByAEIwAEB&sclient=gws-wiz&ved=0ahUKEwjrxOz21vPyAhXPJt8KHYE2CvQQ4dUDCA4&uact=5&safe=active&ssui=on

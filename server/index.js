@@ -10,7 +10,7 @@ if (argv.length < 1) {
 
 Usage: shareIt ./path/to/file/or/folder
 
-Arguments:
+Options:
   -h or --help    Display help message and exit
 `)
 } else {
@@ -53,10 +53,10 @@ try {
     stopPort: 8080 // maximum port
   }, (err, port) => {
     if (err) {
-      console.error("Unable to start server. Port 3000 may already be used");
+      console.error("Unable to start server. Ports 8000 to 8080 are already be used");
     } else {
 
-    app.listen(port, async () => {
+    server = app.listen(port, async () => {
       let remakeRoute = true; // will stay true in the case of a route name collision
 
       console.log("Creating url...")
@@ -82,7 +82,9 @@ try {
             remakeRoute = false;
           }
         } catch {
-          console.log("Error: Unable to create url. Our server may be down.");
+          console.error("Error: Unable to create url. Our server may be down.");
+          server.close();
+          remakeRoute = false;
         }
       }
       // await createRoute();
@@ -96,7 +98,7 @@ try {
   })
 
 } catch(e) {
-  console.log("An error occurred. Please contact the developer.")
+  console.error("An error occurred. Please contact the developer.")
   console.log(e);
 }
 
