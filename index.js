@@ -45,7 +45,7 @@ app.get(["/:route", "/:route/*"], (req, res) => {
       rules: {
         [proxyRuleURL]: fLocation
       },
-      defualt: fLocation
+      default: fLocation
     })
 
     let target = proxyRules.match(req);
