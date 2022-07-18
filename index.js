@@ -34,6 +34,8 @@ app.get("/robots.txt", (req, res) => {
 })
 
 app.get(["/:route", "/:route/*"], (req, res) => {
+  // TODO: use ngrok instead of addr
+
   console.log(req.params, req.url);
   if (req.params.route in routes) {
     route = routes[req.params.route];
@@ -45,7 +47,7 @@ app.get(["/:route", "/:route/*"], (req, res) => {
       rules: {
         [proxyRuleURL]: fLocation
       },
-      defualt: fLocation
+      default: fLocation
     })
 
     let target = proxyRules.match(req);
